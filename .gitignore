@@ -1,0 +1,10 @@
+# Compilados y distribución de NetBeans (Ant)
+/build/
+/dist/
+/_verify/
+
+# Archivos privados del IDE
+/nbproject/private/
+
+# Otros
+*.class

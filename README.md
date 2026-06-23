@@ -2,8 +2,6 @@
 
 Aplicación de consola en Java para la agencia de turismo **Llanquihue Tour** (Región de Los Lagos). Permite registrar y consultar a las personas vinculadas a la operación de la agencia —guías, operadores y proveedores— cargando sus datos desde un archivo externo y aplicando búsquedas y filtros simples.
 
-Proyecto desarrollado para la asignatura **Desarrollo Orientado a Objetos I (PRY2202)** — Evaluación Sumativa, Semana 5.
-
 ## Descripción del sistema
 
 El sistema lee los datos de los colaboradores desde el archivo `files/colaboradores.txt`, los valida, los carga en una colección dinámica (`ArrayList`) y muestra por consola:
@@ -119,4 +117,6 @@ java -Dfile.encoding=UTF-8 -cp build/classes app.Main
 
 ## Autor
 
-Proyecto académico — Duoc UC, asignatura PRY2202 (Desarrollo Orientado a Objetos I).
+Nicolás Ahumada C.  
+Asignatura: Desarrollo Orientado a Objetos I  
+Institución: Duoc UC
