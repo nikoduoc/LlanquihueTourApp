@@ -47,4 +47,12 @@ public class Guia extends Colaborador {
     public String toString() {
         return super.toString() + " | Idiomas: " + idiomas + " | Especialidad: " + especialidad;
     }
+
+    /** Muestra la información del guía con su despliegue propio. */
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("GUÍA TURÍSTICO: " + getNombre() + " (RUT: " + getRut() + ")");
+        System.out.println("   Idiomas: " + idiomas + " | Especialidad: " + especialidad);
+        System.out.println("   Ubicación: " + getUbicacion() + " | Contacto: " + getContacto());
+    }
 }

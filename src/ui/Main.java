@@ -1,9 +1,9 @@
-package app;
+package ui;
 
 import java.util.List;
 import model.Colaborador;
-import service.CargadorColaboradores;
-import service.GestorColaboradores;
+import data.CargadorColaboradores;
+import data.GestorColaboradores;
 
 /**
  * Clase principal: carga los colaboradores desde el archivo, los muestra por
@@ -38,6 +38,11 @@ public class Main {
         // 2. Visualización de todos los colaboradores.
         imprimirTitulo("LISTADO COMPLETO DE COLABORADORES");
         mostrarLista(gestor.obtenerTodos());
+
+        // 2b. Despliegue polimórfico: se recorre la colección invocando
+        //     mostrarInformacion() desde la referencia de la superclase.
+        imprimirTitulo("DESPLIEGUE POLIMÓRFICO CON mostrarInformacion()");
+        gestor.mostrarTodos();
 
         // 3. Filtro por tipo.
         imprimirTitulo("FILTRO POR TIPO: GUÍA");

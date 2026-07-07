@@ -1,4 +1,4 @@
-package service;
+package data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,18 @@ public class GestorColaboradores {
     /** @return la cantidad de colaboradores */
     public int cantidad() {
         return colaboradores.size();
+    }
+
+    /**
+     * Recorre la colección de forma polimórfica e invoca mostrarInformacion()
+     * desde la referencia de la superclase Colaborador. Cada objeto ejecuta la
+     * versión sobrescrita según su tipo real (Guia, Operador o Proveedor).
+     */
+    public void mostrarTodos() {
+        for (Colaborador c : colaboradores) {
+            c.mostrarInformacion();
+            System.out.println();
+        }
     }
 
     /** Busca colaboradores cuyo nombre contenga el texto (sin distinguir mayúsculas).

@@ -1,4 +1,4 @@
-package service;
+package data;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,10 +23,6 @@ public class CargadorColaboradores {
     private static final String SEPARADOR = ";";
     private static final int CAMPOS_ESPERADOS = 8;
     private static final String REGION = "Región de Los Lagos";
-
-    /** Crea el cargador. */
-    public CargadorColaboradores() {
-    }
 
    /**
     * Lee el archivo y devuelve la lista de colaboradores válidos.

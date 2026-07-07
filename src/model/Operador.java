@@ -47,4 +47,12 @@ public class Operador extends Colaborador {
     public String toString() {
         return super.toString() + " | Empresa: " + empresa + " | Experiencia: " + anosExperiencia + " años";
     }
+
+    /** Muestra la información del operador con su despliegue propio. */
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("OPERADOR TURÍSTICO: " + getNombre() + " (RUT: " + getRut() + ")");
+        System.out.println("   Empresa: " + empresa + " | Experiencia: " + anosExperiencia + " años");
+        System.out.println("   Ubicación: " + getUbicacion() + " | Contacto: " + getContacto());
+    }
 }

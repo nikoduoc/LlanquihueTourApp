@@ -47,4 +47,12 @@ public class Proveedor extends Colaborador {
     public String toString() {
         return super.toString() + " | Rubro: " + rubro + " | Servicio: " + servicio;
     }
+
+    /** Muestra la información del proveedor con su despliegue propio. */
+    @Override
+    public void mostrarInformacion() {
+        System.out.println("PROVEEDOR: " + getNombre() + " (RUT: " + getRut() + ")");
+        System.out.println("   Rubro: " + rubro + " | Servicio: " + servicio);
+        System.out.println("   Ubicación: " + getUbicacion() + " | Contacto: " + getContacto());
+    }
 }

@@ -28,11 +28,11 @@ LlanquihueTourAppV1.2/
 │   ├── util/                           # Validación y utilidades
 │   │   ├── Validador.java              # Valida RUT (módulo 11), correo, texto y números
 │   │   └── ValidacionException.java    # Excepción propia de validación
-│   ├── service/                        # Lógica de aplicación
+│   ├── data/                           # Lógica de datos y colección
 │   │   ├── CargadorColaboradores.java  # Lee files/colaboradores.txt y retorna ArrayList<Colaborador>
-│   │   └── GestorColaboradores.java    # Gestiona la colección: recorrido, búsquedas y filtros
-│   └── app/
-│       └── Main.java                   # Ejecuta lectura, recorrido y filtros de colaboradores
+│   │   └── GestorColaboradores.java    # Gestiona la colección: recorrido polimórfico, búsquedas y filtros
+│   └── ui/
+│       └── Main.java                   # Ejecuta lectura, despliegue polimórfico y filtros
 ├── files/
 │   └── colaboradores.txt               # Archivo de datos usado por Main
 └── README.md
@@ -46,8 +46,8 @@ El código está organizado en cuatro paquetes funcionales:
 |------------|-----------------|--------|
 | `model`    | Entidades del dominio | `Colaborador` (abstracta), `Guia`, `Operador`, `Proveedor`, `Contacto`, `Ubicacion` |
 | `util`     | Validación y utilidades | `Validador`, `ValidacionException` |
-| `service`  | Lógica de aplicación | `CargadorColaboradores`, `GestorColaboradores` |
-| `app`      | Punto de entrada | `Main` |
+| `data`     | Lógica de datos y colección | `CargadorColaboradores`, `GestorColaboradores` |
+| `ui`       | Punto de entrada | `Main` |
 
 ### Clases principales
 
@@ -59,15 +59,33 @@ El código está organizado en cuatro paquetes funcionales:
 - **`GestorColaboradores`**: gestiona la colección `ArrayList<Colaborador>` y ofrece búsquedas y filtros.
 - **`Main`**: clase principal con el método `main`.
 
+## Semana 7 — Polimorfismo y colecciones genéricas
+
+En esta etapa se extiende la jerarquía existente para aplicar **polimorfismo** y **colecciones genéricas**:
+
+- **Colección polimórfica**: `GestorColaboradores` mantiene una `List<Colaborador>` que almacena objetos de
+  distintas subclases (`Guia`, `Operador`, `Proveedor`) en una misma colección. Al ejecutar se cargan 10
+  colaboradores (más de los cinco solicitados).
+- **Sobrescritura de métodos**: la superclase `Colaborador` declara el método abstracto
+  `mostrarInformacion()`, sobrescrito con `@Override` en cada subclase para desplegar información
+  especializada según el tipo de servicio.
+- **Recorrido polimórfico**: el método `GestorColaboradores.mostrarTodos()` recorre la colección con un bucle
+  `for-each` e invoca `mostrarInformacion()` desde la referencia de tipo `Colaborador`. Cada objeto ejecuta la
+  versión sobrescrita según su tipo real, sin necesidad de usar `instanceof`. Este recorrido se muestra en la
+  sección *"DESPLIEGUE POLIMÓRFICO CON mostrarInformacion()"* de la salida por consola.
+- **Escalabilidad**: para integrar un nuevo tipo de servicio basta con crear otra subclase de `Colaborador` y
+  sobrescribir `mostrarInformacion()`, sin modificar el código de recorrido existente.
+
 ## Buenas prácticas de POO aplicadas
 
 - Atributos `private` con sus respectivos *getters* y *setters*.
 - Constructores en todas las clases.
 - Método `toString()` implementado en cada clase (las subclases reutilizan el de la clase base con `super.toString()`).
 - **Herencia**: `Guia`, `Operador` y `Proveedor` extienden `Colaborador`.
+- **Polimorfismo**: método abstracto `mostrarInformacion()` sobrescrito en cada subclase e invocado desde referencias de la superclase.
 - **Composición**: `Colaborador` contiene un `Contacto` y una `Ubicacion`.
 - **Validaciones** con bloques `try-catch` y una excepción propia (`ValidacionException`).
-- **Colecciones**: uso de `ArrayList` para almacenar los objetos.
+- **Colecciones genéricas**: uso de `List<Colaborador>` (`ArrayList`) para almacenar y recorrer los objetos.
 - Documentación con **Javadoc** en todas las clases y métodos.
 
 ## Formato del archivo de datos (`files/colaboradores.txt`)
@@ -95,7 +113,7 @@ GUIA;María González;12345678-5;maria.gonzalez@llanquihuetour.cl;+56912345678;P
 ### Desde NetBeans / IntelliJ IDEA
 
 1. Abrir el proyecto `LlanquihueTourAppV1.2`.
-2. Verificar que la clase principal sea `app.Main`.
+2. Verificar que la clase principal sea `ui.Main`.
 3. Ejecutar el proyecto (botón **Run** o `F6` en NetBeans).
 
 > La carpeta `files/` (con `colaboradores.txt` dentro) debe estar en la raíz del proyecto (junto a `build.xml`), que es el directorio de trabajo al ejecutar desde el IDE.
@@ -107,7 +125,7 @@ GUIA;María González;12345678-5;maria.gonzalez@llanquihuetour.cl;+56912345678;P
 javac -encoding UTF-8 -d build/classes $(find src -name "*.java")
 
 # Ejecutar
-java -Dfile.encoding=UTF-8 -cp build/classes app.Main
+java -Dfile.encoding=UTF-8 -cp build/classes ui.Main
 ```
 
 ## Requisitos

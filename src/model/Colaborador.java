@@ -1,8 +1,7 @@
 package model;
 
 /**
- * Clase base abstracta de una persona vinculada a la agencia.
- * Usa composición: cada colaborador tiene un Contacto y una Ubicacion.
+ * Clase base de la App de una persona vinculada a la agencia.
  */
 public abstract class Colaborador {
 
@@ -72,6 +71,13 @@ public abstract class Colaborador {
     public void setUbicacion(Ubicacion ubicacion) {
         this.ubicacion = ubicacion;
     }
+
+    /**
+     * Muestra por consola la información del colaborador.
+     * Método abstracto: cada subclase lo sobrescribe con su despliegue
+     * específico, permitiendo un recorrido polimórfico de la colección.
+     */
+    public abstract void mostrarInformacion();
 
     /** @return los datos comunes del colaborador como texto */
     @Override
