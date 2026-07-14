@@ -1,112 +1,72 @@
-# Llanquihue Tour — Gestión de Colaboradores
+# Llanquihue Tour — Sistema de Gestión
 
-Aplicación de consola en Java para la agencia de turismo **Llanquihue Tour** (Región de Los Lagos). Permite registrar y consultar a las personas vinculadas a la operación de la agencia —guías, operadores y proveedores— cargando sus datos desde un archivo externo y aplicando búsquedas y filtros simples.
+Aplicación en Java para la agencia de turismo **Llanquihue Tour** (Región de Los Lagos). El sistema modela
+los **servicios turísticos** y las **entidades operativas** de la agencia (guías, vehículos y colaboradores
+externos) aplicando herencia, polimorfismo, interfaces, colecciones genéricas y una interfaz gráfica básica.
 
 ## Descripción del sistema
 
-El sistema lee los datos de los colaboradores desde el archivo `files/colaboradores.txt`, los valida, los carga en una colección dinámica (`ArrayList`) y muestra por consola:
-
-1. El listado completo de colaboradores.
-2. Un filtro por tipo (guías).
-3. Un filtro por comuna.
-4. Una búsqueda por nombre.
-
-Si una línea del archivo está mal formada o tiene datos inválidos (RUT, correo, etc.), se descarta de forma controlada mediante `try-catch` y se informa por consola, sin detener la carga del resto.
+El sistema define un contrato común (`Registrable`) que implementan las distintas entidades gestionables,
+las organiza en una colección genérica y las recorre diferenciando su tipo en tiempo de ejecución con
+`instanceof`. Además, incorpora una interfaz gráfica (Swing) que permite ingresar nuevas entidades y
+visualizar el resumen de las existentes, pensada para el personal administrativo.
 
 ## Estructura del proyecto
 
 ```
 LlanquihueTourAppV1.2/
 ├── src/
-│   ├── model/                          # Entidades del dominio
-│   │   ├── Colaborador.java            # Clase base abstracta: atributos, getters, setters y toString()
-│   │   ├── Guia.java                   # Hereda de Colaborador (idiomas, especialidad)
-│   │   ├── Operador.java               # Hereda de Colaborador (empresa, años de experiencia)
-│   │   ├── Proveedor.java              # Hereda de Colaborador (rubro, servicio)
-│   │   ├── Contacto.java               # Composición: correo y teléfono
-│   │   └── Ubicacion.java              # Composición: comuna y región
-│   ├── util/                           # Validación y utilidades
-│   │   ├── Validador.java              # Valida RUT (módulo 11), correo, texto y números
-│   │   └── ValidacionException.java    # Excepción propia de validación
-│   ├── data/                           # Lógica de datos y colección
-│   │   ├── CargadorColaboradores.java  # Lee files/colaboradores.txt y retorna ArrayList<Colaborador>
-│   │   └── GestorColaboradores.java    # Gestiona la colección: recorrido polimórfico, búsquedas y filtros
+│   ├── model/                       # Dominio: jerarquías e interfaz
+│   │   ├── Registrable.java         # Interfaz: contrato común mostrarResumen()
+│   │   ├── RecursoAgencia.java      # Superclase abstracta de las entidades (implements Registrable)
+│   │   ├── GuiaTuristico.java       # Entidad: guía turístico
+│   │   ├── Vehiculo.java            # Entidad: vehículo
+│   │   ├── ColaboradorExterno.java  # Entidad: colaborador externo
+│   │   ├── ServicioTuristico.java   # Superclase abstracta de los servicios (semanas 6-7)
+│   │   ├── RutaGastronomica.java    # Servicio turístico (numeroDeParadas)
+│   │   ├── PaseoLacustre.java       # Servicio turístico (tipoEmbarcacion)
+│   │   └── ExcursionCultural.java   # Servicio turístico (lugarHistorico)
+│   ├── data/                        # Colecciones y lógica de datos
+│   │   ├── GestorEntidades.java     # ArrayList<Registrable> + diferenciación con instanceof
+│   │   └── GestorServicios.java     # List<ServicioTuristico> (semanas 6-7)
 │   └── ui/
-│       └── Main.java                   # Ejecuta lectura, despliegue polimórfico y filtros
-├── files/
-│   └── colaboradores.txt               # Archivo de datos usado por Main
+│       ├── Main.java                # Clase principal: demo por consola y lanzamiento de la GUI
+│       └── VentanaPrincipal.java    # Interfaz gráfica (JFrame + JOptionPane)
 └── README.md
 ```
 
 ### Paquetes
 
-El código está organizado en cuatro paquetes funcionales:
+| Paquete | Responsabilidad | Clases e interfaces |
+|---------|-----------------|---------------------|
+| `model` | Dominio, jerarquías e interfaz | `Registrable`, `RecursoAgencia`, `GuiaTuristico`, `Vehiculo`, `ColaboradorExterno`, `ServicioTuristico` y sus subclases |
+| `data`  | Colecciones y lógica de datos | `GestorEntidades`, `GestorServicios` |
+| `ui`    | Interfaz de usuario | `Main`, `VentanaPrincipal` |
 
-| Paquete    | Responsabilidad | Clases |
-|------------|-----------------|--------|
-| `model`    | Entidades del dominio | `Colaborador` (abstracta), `Guia`, `Operador`, `Proveedor`, `Contacto`, `Ubicacion` |
-| `util`     | Validación y utilidades | `Validador`, `ValidacionException` |
-| `data`     | Lógica de datos y colección | `CargadorColaboradores`, `GestorColaboradores` |
-| `ui`       | Punto de entrada | `Main` |
+## Clases e interfaces principales
 
-### Clases principales
+- **`Registrable`** (interfaz): declara el método `mostrarResumen()`, contrato común de todas las entidades
+  gestionables.
+- **`RecursoAgencia`** (superclase abstracta): implementa `Registrable` y concentra el atributo común
+  `nombre`. Es la base de la jerarquía de entidades.
+- **`GuiaTuristico`, `Vehiculo`, `ColaboradorExterno`**: heredan de `RecursoAgencia` e implementan
+  `mostrarResumen()` con un mensaje personalizado según su tipo.
+- **`GestorEntidades`**: mantiene un `ArrayList<Registrable>`, recorre la colección con un bucle `for-each` y
+  usa `instanceof` para identificar el tipo de cada entidad y aplicar una lógica de detalle diferenciada.
+- **`VentanaPrincipal`**: interfaz gráfica con botones para ingresar guías, vehículos y colaboradores
+  (mediante `JOptionPane`) y un área de texto que muestra el resumen de todos los registros.
+- **`Main`**: crea la colección con datos de ejemplo, imprime una demostración por consola y lanza la GUI.
 
-- **`Colaborador`** (abstracta): clase base con los atributos comunes (`tipo`, `nombre`, `rut`) y dos relaciones de **composición**: cada colaborador posee un `Contacto` y una `Ubicacion`.
-- **`Guia`, `Operador`, `Proveedor`**: especializan a `Colaborador` y añaden sus atributos propios.
-- **`Contacto`** y **`Ubicacion`**: objetos de valor compuestos dentro de cada colaborador.
-- **`Validador`**: valida texto no vacío, RUT (con dígito verificador, módulo 11), correo y números, lanzando `ValidacionException`.
-- **`CargadorColaboradores`**: lee el archivo de datos y construye la lista de colaboradores válidos.
-- **`GestorColaboradores`**: gestiona la colección `ArrayList<Colaborador>` y ofrece búsquedas y filtros.
-- **`Main`**: clase principal con el método `main`.
+## Conceptos de POO aplicados
 
-## Semana 7 — Polimorfismo y colecciones genéricas
-
-En esta etapa se extiende la jerarquía existente para aplicar **polimorfismo** y **colecciones genéricas**:
-
-- **Colección polimórfica**: `GestorColaboradores` mantiene una `List<Colaborador>` que almacena objetos de
-  distintas subclases (`Guia`, `Operador`, `Proveedor`) en una misma colección. Al ejecutar se cargan 10
-  colaboradores (más de los cinco solicitados).
-- **Sobrescritura de métodos**: la superclase `Colaborador` declara el método abstracto
-  `mostrarInformacion()`, sobrescrito con `@Override` en cada subclase para desplegar información
-  especializada según el tipo de servicio.
-- **Recorrido polimórfico**: el método `GestorColaboradores.mostrarTodos()` recorre la colección con un bucle
-  `for-each` e invoca `mostrarInformacion()` desde la referencia de tipo `Colaborador`. Cada objeto ejecuta la
-  versión sobrescrita según su tipo real, sin necesidad de usar `instanceof`. Este recorrido se muestra en la
-  sección *"DESPLIEGUE POLIMÓRFICO CON mostrarInformacion()"* de la salida por consola.
-- **Escalabilidad**: para integrar un nuevo tipo de servicio basta con crear otra subclase de `Colaborador` y
-  sobrescribir `mostrarInformacion()`, sin modificar el código de recorrido existente.
-
-## Buenas prácticas de POO aplicadas
-
-- Atributos `private` con sus respectivos *getters* y *setters*.
-- Constructores en todas las clases.
-- Método `toString()` implementado en cada clase (las subclases reutilizan el de la clase base con `super.toString()`).
-- **Herencia**: `Guia`, `Operador` y `Proveedor` extienden `Colaborador`.
-- **Polimorfismo**: método abstracto `mostrarInformacion()` sobrescrito en cada subclase e invocado desde referencias de la superclase.
-- **Composición**: `Colaborador` contiene un `Contacto` y una `Ubicacion`.
-- **Validaciones** con bloques `try-catch` y una excepción propia (`ValidacionException`).
-- **Colecciones genéricas**: uso de `List<Colaborador>` (`ArrayList`) para almacenar y recorrer los objetos.
-- Documentación con **Javadoc** en todas las clases y métodos.
-
-## Formato del archivo de datos (`files/colaboradores.txt`)
-
-Archivo de texto con campos separados por punto y coma (`;`). La primera línea es el encabezado; las líneas que empiezan con `#` se ignoran.
-
-```
-tipo;nombre;rut;email;telefono;comuna;campoA;campoB
-```
-
-- `tipo`: `GUIA`, `OPERADOR` o `PROVEEDOR`.
-- `campoA` / `campoB` dependen del tipo:
-  - **GUIA** → `idiomas` ; `especialidad`
-  - **OPERADOR** → `empresa` ; `años de experiencia` (número)
-  - **PROVEEDOR** → `rubro` ; `servicio`
-
-Ejemplo:
-
-```
-GUIA;María González;12345678-5;maria.gonzalez@llanquihuetour.cl;+56912345678;Puerto Varas;Español/Inglés;Rutas gastronómicas
-```
+- **Interfaces**: `Registrable` como contrato de comportamiento común (Semana 8).
+- **Herencia**: `RecursoAgencia` → `GuiaTuristico`, `Vehiculo`, `ColaboradorExterno`; y
+  `ServicioTuristico` → `RutaGastronomica`, `PaseoLacustre`, `ExcursionCultural` (Semanas 6-7).
+- **Polimorfismo**: recorrido de la colección desde referencias del tipo `Registrable`, invocando métodos
+  sobrescritos/implementados.
+- **`instanceof`**: diferenciación del comportamiento en tiempo de ejecución dentro de `GestorEntidades`.
+- **Colecciones genéricas**: `ArrayList<Registrable>` y `List<ServicioTuristico>`.
+- **Interfaz gráfica**: ingreso y visualización de datos con Swing (`JFrame` + `JOptionPane`).
 
 ## Instrucciones de ejecución
 
@@ -115,26 +75,31 @@ GUIA;María González;12345678-5;maria.gonzalez@llanquihuetour.cl;+56912345678;P
 1. Abrir el proyecto `LlanquihueTourAppV1.2`.
 2. Verificar que la clase principal sea `ui.Main`.
 3. Ejecutar el proyecto (botón **Run** o `F6` en NetBeans).
-
-> La carpeta `files/` (con `colaboradores.txt` dentro) debe estar en la raíz del proyecto (junto a `build.xml`), que es el directorio de trabajo al ejecutar desde el IDE.
+4. Se mostrará una demostración por consola y se abrirá la ventana de gestión de entidades.
 
 ### Desde la línea de comandos
 
 ```bash
 # Compilar (desde la carpeta del proyecto)
-javac -encoding UTF-8 -d build/classes $(find src -name "*.java")
+javac -encoding UTF-8 -d build/classes src/model/*.java src/data/*.java src/ui/*.java
 
 # Ejecutar
 java -Dfile.encoding=UTF-8 -cp build/classes ui.Main
 ```
 
+## Uso de la interfaz gráfica
+
+- **Agregar Guía / Agregar Vehículo / Agregar Colaborador**: abren cuadros de diálogo para ingresar los
+  datos de cada tipo de entidad.
+- **Mostrar Resúmenes**: actualiza el área central con el resumen de todas las entidades registradas.
+
 ## Requisitos
 
-- JDK 17 o superior (el proyecto está configurado para JDK del IDE).
-- NetBeans o IntelliJ IDEA.
+- JDK 17 o superior.
+- NetBeans o IntelliJ IDEA (opcional).
 
 ## Autor
 
-Nicolás Ahumada C.  
-Asignatura: Desarrollo Orientado a Objetos I  
+Nicolás Ahumada C.
+Asignatura: Desarrollo Orientado a Objetos I
 Institución: Duoc UC
