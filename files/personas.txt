@@ -1,0 +1,9 @@
+tipo;nombre;rut;email;telefono;calle;comuna;region;extra1;extra2
+CLIENTE;María González;12345670-K;maria.gonzalez@correo.cl;+56911111111;Av. Costanera 123;Puerto Varas;Región de Los Lagos;Tours gastronómicos;3
+CLIENTE;Pedro Soto;9876540-9;pedro.soto@correo.cl;+56922222222;Calle Del Lago 45;Frutillar;Región de Los Lagos;Paseos lacustres;1
+EMPLEADO;Camila Vera;15234870-3;camila.vera@llanquihuetour.cl;+56933333333;Los Ciruelos 78;Llanquihue;Región de Los Lagos;Guía;Español/Inglés/Portugués
+EMPLEADO;Andrés Muñoz;18765430-0;andres.munoz@llanquihuetour.cl;+56944444444;Ruta 225 Km 5;Puerto Montt;Región de Los Lagos;Guía;Español/Alemán
+PROVEEDOR;Transporte Los Lagos;11222330-4;contacto@translagos.cl;+56955555555;Av. Presidente Ibáñez 900;Puerto Montt;Región de Los Lagos;TransLagos SpA;Transporte
+PROVEEDOR;Hotel Vista Volcán;20111220-6;reservas@vistavolcan.cl;+56966666666;Camino Ensenada 12;Frutillar;Región de Los Lagos;Vista Volcán Ltda.;Alojamiento
+CLIENTE;Lucía Fuentes;7654320-8;lucia.fuentes@correo.cl;+56977777777;Pasaje Los Robles 3;Osorno;Región de Los Lagos;Rutas culturales;5
+CLIENTE;RUT Malo;11111111-5;malo@correo.cl;+56900000000;Calle X 1;Puerto Varas;Región de Los Lagos;Tours;2

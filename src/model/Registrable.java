@@ -1,15 +1,19 @@
 package model;
 
 /**
- * Contrato de comportamiento común para todas las entidades gestionables de la
- * agencia. Cualquier clase que implemente esta interfaz puede ser almacenada y
- * tratada de forma unificada dentro de una misma colección.
+ * Contrato de comportamiento común para toda entidad que pueda ser registrada y
+ * consultada dentro del sistema de Llanquihue Tour. Permite tratar de forma
+ * unificada (polimórfica) a personas y servicios turísticos.
  */
 public interface Registrable {
 
+    /** Registra la entidad en el sistema. */
+    void registrar();
+
     /**
-     * Devuelve un resumen textual de la entidad, personalizado según su tipo.
-     * @return el resumen de la entidad
+     * Devuelve los datos de la entidad en formato de texto, personalizados
+     * según su tipo concreto.
+     * @return los datos de la entidad
      */
-    String mostrarResumen();
+    String mostrarDatos();
 }
